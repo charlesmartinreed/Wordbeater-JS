@@ -46,6 +46,9 @@ function init() {
 	//load a random from array
 	showWord(words);
 
+	//matching for word input with each keystroke
+	wordInput.addEventListener('input', startWordMatch);
+
 	//call countdown every second
 	setInterval(countdown, 1000);
 
@@ -57,6 +60,33 @@ function init() {
 function showWord(words) {
 	const randIndex = Math.floor(Math.random() * words.length);
 	currentWord.innerHTML = words[randIndex];
+}
+
+// Word matching
+function startWordMatch() {
+	if(matchWords()) {
+		isPlaying = true;
+		time = 6; //or, one above the initial time because we need to account for a page load
+		wordInput.value = "";
+		score++;
+		showWord(words);
+	}
+	if(score === -1) {
+		scoreDisplay.innerHTML = 0;
+	} else {
+		scoreDisplay.innerHTML = score;
+	}
+}
+
+//match current word to wordInput
+function matchWords() {
+	if(wordInput.value === currentWord.innerHTML) {
+		message.innerHTML = "Correct";
+		return true
+	} else {
+		message.innerHTML = "";
+		return false
+	}
 }
 
 //Countdown timer
@@ -74,5 +104,6 @@ function countdown() {
 function checkGameStatus() {
 	if(!isPlaying && time === 0) {
 		message.innerHTML = "Game Over!"
+		score = -1;
 	}
 }
