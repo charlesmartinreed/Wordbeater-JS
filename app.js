@@ -45,10 +45,34 @@ const words = [
 function init() {
 	//load a random from array
 	showWord(words);
+
+	//call countdown every second
+	setInterval(countdown, 1000);
+
+	//check game status
+	setInterval(checkGameStatus, 50);
 }
 
 //Pick and show random word
 function showWord(words) {
 	const randIndex = Math.floor(Math.random() * words.length);
 	currentWord.innerHTML = words[randIndex];
+}
+
+//Countdown timer
+function countdown() {
+	if(time > 0) {
+		//decrement the timer
+		time--;
+	} else if(time === 0) {
+		isPlaying = false;
+	}
+
+	timeDisplay.innerHTML = time;
+}
+
+function checkGameStatus() {
+	if(!isPlaying && time === 0) {
+		message.innerHTML = "Game Over!"
+	}
 }
